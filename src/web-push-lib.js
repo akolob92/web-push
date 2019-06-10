@@ -113,6 +113,7 @@ WebPushLib.prototype.generateRequestDetails = function(subscription, payload, op
 
     if (options) {
       const validOptionKeys = [
+        'agent',
         'headers',
         'gcmAPIKey',
         'vapidDetails',
@@ -300,7 +301,9 @@ WebPushLib.prototype.sendNotification = function(subscription, payload, options)
       httpsOptions.headers = requestDetails.headers;
       httpsOptions.method = requestDetails.method;
 
-      if (requestDetails.proxy) {
+      if (options && options.agent) {
+        httpsOptions.agent = options.agent;
+      } else if (requestDetails.proxy) {
         httpsOptions.agent = new HttpsProxyAgent(requestDetails.proxy);
       }
 
